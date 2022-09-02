@@ -1,0 +1,194 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Class="Expense.MainWindow"
+        AllowsTransparency="True" WindowStyle="None" mc:Ignorable="d"
+        Title=""
+        Height="460" Width="800" ResizeMode="NoResize" Background="{x:Null}"
+        MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen"
+    >
+    <Window.Resources>
+        <Style TargetType="{x:Type Label}" >
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="{x:Type TextBox}" >
+            <Style.Resources>
+                <VisualBrush x:Key="PeopleTips" TileMode="None" Stretch="None" AlignmentX="Left">
+                    <VisualBrush.Visual>
+                        <TextBlock Text="姓名之间须隔开"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+                <VisualBrush x:Key="DateTips" TileMode="None" Stretch="None" AlignmentX="Left">
+                    <VisualBrush.Visual>
+                        <TextBlock Text="YYYY MM DD"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Style.Resources>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Margin" Value="0, 2, 5, 0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="Text" Value=""/>
+                        <Condition Property="Tag" Value="Date"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="{StaticResource DateTips}"/>
+                </MultiTrigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="Text" Value=""/>
+                        <Condition Property="Tag" Value="People"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="{StaticResource PeopleTips}"/>
+                </MultiTrigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10"  BorderBrush="Black"
+                                BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="AliceBlue"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Opacity" Value="0.7"/>
+        </Style>
+        <Style TargetType="{x:Type Grid}" x:Key="GridStyle">
+            <Setter Property="Width" Value="220"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="AliceBlue"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Border" x:Key="BorderStyle">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="5"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Border x:Name="Background" Opacity="0.8" Background="White" BorderBrush="AliceBlue" BorderThickness="1" CornerRadius="15"/>
+
+        <Grid x:Name="Menu_content" Visibility="Hidden">
+            <Button Click="Menu_chose_recption_path_click" Content="选择报销清单所在根目录" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="150,100" Padding="5" Width="300"/>
+            <Button Content="There are something todo" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="5" Width="300"/>
+            <Button Click="Menu_back_click" Content="返回" FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="150,100" Padding="5" Width="300"/>
+        </Grid>
+
+        <Grid x:Name="Recption_content">
+            <Grid Width="280" Margin="0, 20" HorizontalAlignment="Center" Style="{StaticResource GridStyle}">
+                <Label Content="接待事由" HorizontalAlignment="Left" />
+                <TextBox x:Name="Recption_reason"  Width="200" HorizontalAlignment="Right" HorizontalContentAlignment="Center"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+            <Grid Margin="100, 80" Style="{StaticResource GridStyle}">
+                <Label Content="报销人" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <TextBox x:Name="Recption_name"  HorizontalAlignment="Right" VerticalAlignment="Top" Tag="People"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+            <Grid Margin="100, 120" Style="{StaticResource GridStyle}">
+                <Label Content="同行人员" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <TextBox x:Name="Recption_colleagues" HorizontalAlignment="Right" VerticalAlignment="Top" Tag="People"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+            <Grid Margin="480, 80, 0,0" Style="{StaticResource GridStyle}">
+                <Label Content="接待人员" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <TextBox x:Name="Recption_reception_people" HorizontalAlignment="Right" VerticalAlignment="Top" Tag="People"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+            <Grid Margin="480,120, 0,0" Style="{StaticResource GridStyle}">
+                <Label Content="接待单位" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <TextBox x:Name="Recption_reception_employer" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+
+            <Grid Margin="100, 180, 0, 0" Style="{StaticResource GridStyle}">
+                <Label Content="接待日期" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <TextBox x:Name="Recption_start_date" HorizontalAlignment="Right" VerticalAlignment="Top" Tag="Date" PreviewTextInput="Date_PreviewTextInput" InputMethod.IsInputMethodEnabled="False"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+            <Grid Margin="100, 220, 0, 0" Style="{StaticResource GridStyle}">
+                <Label Content="报销日期" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <TextBox x:Name="Recption_reimbursement_date" HorizontalAlignment="Right" VerticalAlignment="Top" Tag="Date" PreviewTextInput="Date_PreviewTextInput" InputMethod.IsInputMethodEnabled="False"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+            <Grid Margin="480, 180, 0, 0" Style="{StaticResource GridStyle}">
+                <Label Content="就餐地点" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <TextBox x:Name="Recption_target_place" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+            <Grid Margin="480, 220, 0, 0" Style="{StaticResource GridStyle}">
+                <Label Content="就餐时间" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <ComboBox SelectedIndex="2" x:Name="Recption_meal_time" Style="{StaticResource ComboBoxStyle}">
+                    <ComboBoxItem Content="早"/>
+                    <ComboBoxItem Content="中"/>
+                    <ComboBoxItem Content="晚"/>
+                </ComboBox>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+
+            <Grid Margin="100, 280, 0, 0" Style="{StaticResource GridStyle}">
+                <Label Content="发票总金额" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <TextBox x:Name="Recption_total_count" HorizontalAlignment="Right" VerticalAlignment="Top" PreviewTextInput="Account_PreviewTextInput" InputMethod.IsInputMethodEnabled="False"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+            <Grid Margin="100, 320, 0, 0" Style="{StaticResource GridStyle}">
+                <Label Content="发票总税额" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <TextBox x:Name="Recption_tax_count" HorizontalAlignment="Right" VerticalAlignment="Top" PreviewTextInput="Account_PreviewTextInput" InputMethod.IsInputMethodEnabled="False"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+            <Grid Margin="480, 280, 0, 0" Style="{StaticResource GridStyle}">
+                <Label Content="发票总张数" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBox x:Name="Recption_tax_paper_number" HorizontalAlignment="Right" VerticalAlignment="Top" PreviewTextInput="Digit_PreviewTextInput" InputMethod.IsInputMethodEnabled="False"/>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+            <Grid Margin="480, 320, 0, 0" Style="{StaticResource GridStyle}">
+                <Label Content="包含酒水单" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox SelectedIndex="1" x:Name="Recption_have_wine_paper" Style="{StaticResource ComboBoxStyle}">
+                    <ComboBoxItem Content="是"/>
+                    <ComboBoxItem Content="否"/>
+                </ComboBox>
+                <Border Style="{StaticResource BorderStyle}"/>
+            </Grid>
+
+            <Button Click="Submit_click" Content="生 成" Margin="0,0,0,20" Padding="8,5" FontSize="18" BorderThickness="2"/>
+        </Grid>
+
+        <Grid x:Name="Mask_content" Visibility="Hidden">
+            <Button Click="Mask_click" x:Name="Mask" Width="800" Height="460" FontSize="36" Background="Transparent" BorderThickness="0"/>
+        </Grid>
+
+        <Button Click="Quit_click" Content=" " Background="Red"  Width="20" Height="20" Margin="3, 3" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+        <Button Click="Menu_click" Background="Yellow"  Width="20" Height="20" Margin="28, 3" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+        <Button Click="Change_click" Background="White"  Width="20" Height="20" Margin="53, 3" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
